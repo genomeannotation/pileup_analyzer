@@ -1,0 +1,10 @@
+## general trash:
+*.pyc
+*.swp
+*.pileup
+*.bam
+*.fasta
+*.fai
+
+## specific stuff
+test_files/*
