@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pileup_parser_classes import ConsensusCaller, PileSanitizer
+from pileup_parser_classes import ConsensusCaller, PileSanitizer, QualityFilter
 
 class TestPileSanitizer(unittest.TestCase):
     def test_sanitize(self):
@@ -22,6 +22,11 @@ class TestPileSanitizer(unittest.TestCase):
         pile4 = 'A$(AAAGG'
         result4 = sanitizer.sanitize(pile4)
         self.assertEqual('AAAAGG', result4)
+
+class TestQualityFilter(unittest.TestCase):
+    def test_initialize(self):
+        fil = QualityFilter(30)
+        self.assertEqual(30, fil.quality_threshold)
 
 class TestConsensusCaller(unittest.TestCase):
     def test_initialize(self):

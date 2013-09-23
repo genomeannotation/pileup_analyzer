@@ -30,6 +30,10 @@ class PileSanitizer:
             clean_pile += base
         return clean_pile
 
+class QualityFilter:
+    def __init__(self, min_qual):
+        self.quality_threshold = min_qual
+
 class ConsensusCaller:
 
     def __init__(self, depth, frequency):
