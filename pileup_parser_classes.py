@@ -14,7 +14,6 @@ class PileSanitizer:
         for base in pile:
             m1 = self.indel_re.match(base)
             if m1:
-                print("foo")
                 on_indel = True
                 continue
             m2 = self.cigar_re.match(base)

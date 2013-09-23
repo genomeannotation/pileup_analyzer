@@ -6,9 +6,22 @@ from pileup_parser_classes import ConsensusCaller, PileSanitizer
 class TestPileSanitizer(unittest.TestCase):
     def test_sanitize(self):
         sanitizer = PileSanitizer()
+        # remove insertions
         pile1 = 'AAAA+3CCCGG'
         result1 = sanitizer.sanitize(pile1)
         self.assertEqual('AAAAGG', result1)
+        # remove deletions
+        pile2 = 'AA-2CCAAGG'
+        result2 = sanitizer.sanitize(pile2)
+        self.assertEqual('AAAAGG', result2)
+        # remove those '^' CIGAR thingies
+        pile3 = 'AA^#AAGG'
+        result3 = sanitizer.sanitize(pile3)
+        self.assertEqual('AAAAGG', result3)
+        # remove those '$' CIGAR thingies
+        pile4 = 'A$(AAAGG'
+        result4 = sanitizer.sanitize(pile4)
+        self.assertEqual('AAAAGG', result4)
 
 class TestConsensusCaller(unittest.TestCase):
     def test_initialize(self):
