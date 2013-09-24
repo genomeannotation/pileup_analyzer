@@ -92,6 +92,26 @@ class TestPileupLineParser(unittest.TestCase):
     def test_get_coordinate(self):
         self.assertEqual('667', self.parser.get_coordinate(self.test_input))
         
+class TestLocus(unittest.TestCase):
+    def setUp(self):
+        chrom = 'comp102583_c0_seq1'
+        coord = '667'
+        pile1 = Pile('AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa', 'B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD')
+        pile2 = Pile('AAAAAAAaaaaaaa', 'DDDDDBBDDDDDDD')
+        control_piles = [pile1, pile2]
+        pile3 = Pile('AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa', 'DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9')
+        pile4 = Pile('AAAAAAAAAAAAAAAaaaaaaacaaaaaaa', 'DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD')
+        exp_piles = [pile3, pile4]
+        self.locus = Locus(chrom, coord, control_piles, exp_piles)
+
+    def test_init(self):
+        self.assertEqual('comp102583_c0_seq1', self.locus.chromosome)
+
+    def test_to_string(self):
+        expected = "chromosome: comp102583_c0_seq1; coordinate: 667; "
+        expected += "control piles: 2; experimental piles: 2"
+        self.assertEqual(expected, self.locus.to_string())
+
         
 
 ##################################

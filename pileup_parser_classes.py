@@ -126,6 +126,20 @@ class PileupLineParser:
     def get_coordinate(self, line):
         return line[1]
 
+class Locus:
+    def __init__(self, chrom, coord, ctrl_piles, exp_piles):
+        self.chromosome = chrom
+        self.coordinate = coord
+        self.control_piles = ctrl_piles
+        self.experimental_piles = exp_piles
+
+    def to_string(self):
+        result = "chromosome: " + self.chromosome + "; "
+        result += "coordinate: " + self.coordinate + "; "
+        result += "control piles: " + str(len(self.control_piles)) + "; "
+        result += "experimental piles: " + str(len(self.experimental_piles))
+        return result
+
 
 
 
