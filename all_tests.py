@@ -121,13 +121,24 @@ class TestLocus(unittest.TestCase):
     def setUp2(self):
         chrom = 'test_chrom'
         coord = '123'
-        pile1 = Pile('GAT+3CCGTACA', 'B::D0DD')
-        pile2 = Pile('GATTA^&CA', 'B::D0DD')
+        pile1 = Pile('GAT+3CCGTACA', 'hghhghg')
+        pile2 = Pile('GATTA^&CA', 'hghhghg')
         control_piles = [pile1, pile2]
-        pile3 = Pile('GATTAC-2GGA', 'B::D0DD')
-        pile4 = Pile('G$#ATTA$@CA', 'B::D0DD')
+        pile3 = Pile('GATTAC-2GGA', 'hghhghg')
+        pile4 = Pile('G$#ATTA$@CA', 'hghhghg')
         exp_piles = [pile3, pile4]
         self.locus2 = Locus(chrom, coord, control_piles, exp_piles)
+
+    def setUp3(self):
+        chrom = 'test_chrom'
+        coord = '123'
+        pile1 = Pile('GATTACA', 'hghhghg')
+        pile2 = Pile('GATTACA', 'hghhghg')
+        control_piles = [pile1, pile2]
+        pile3 = Pile('GATTACA', 'hghhghg')
+        pile4 = Pile('GATTACA', 'hghhghg')
+        exp_piles = [pile3, pile4]
+        self.locus3 = Locus(chrom, coord, control_piles, exp_piles)
 
     def test_init(self):
         self.assertEqual('comp102583_c0_seq1', self.locus.chromosome)
@@ -144,6 +155,11 @@ class TestLocus(unittest.TestCase):
         self.assertEqual('GATTACA', self.locus2.control_piles[1].bases)
         self.assertEqual('GATTACA', self.locus2.experimental_piles[0].bases)
         self.assertEqual('GATTACA', self.locus2.experimental_piles[1].bases)
+
+    def test_filter_all(self):
+        self.setUp3()
+        self.locus3.filter_all(40, 64)
+        self.assertEqual('GTTC', self.locus3.control_piles[0].bases)
 
         
 

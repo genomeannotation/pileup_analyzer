@@ -169,6 +169,15 @@ class Locus:
         for pile in self.experimental_piles:
             pile.bases = sani.sanitize(pile.bases)
 
+    def filter_all(self, qscore, offset):
+        filt= QualityFilter(qscore, offset)
+        for pile in self.control_piles:
+            filt.filter(pile)
+        for pile in self.experimental_piles:
+            filt.filter(pile)
+        
+        
+
 
 
 
