@@ -89,7 +89,7 @@ class ConsensusCaller:
 class PileupLineParser:
     def __init__(self, grouplist):
         if len(grouplist) != 2:
-            sys.err.write("PileupLineParser: grouplist must be a list of 2 lists.")
+            sys.stderr.write("PileupLineParser: grouplist must be a list of 2 lists.")
         self.control_group = grouplist[0]
         self.experimental_group = grouplist[1]
 
@@ -189,7 +189,43 @@ class Locus:
         for pile in self.control_piles:
             ctrl_bases.append(pile.bases)
         return caller.call(ctrl_bases)
-            
+
+    def generate_stats(self, call):
+        ref = call.lower()
+        ctrl_all_stats = []
+        exp_all_stats = []
+        ctrl_match = 0
+        ctrl_total = 0
+        exp_match = 0
+        exp_total = 0
+        match = 0
+        total = 0
+        for pile in self.control_piles:
+            ctrl_total += len(pile.bases)
+            for base in pile.bases:
+                total += 1
+                if base.lower() == ref:
+                    match += 1
+                    ctrl_match += 1
+            ctrl_all_stats.extend([match, total])
+            match = 0
+            total = 0
+        for pile in self.experimental_piles:
+            exp_total += len(pile.bases)
+            for base in pile.bases:
+                total += 1
+                if base.lower() == ref:
+                    match += 1
+                    exp_match += 1
+            exp_all_stats.extend([match, total])
+            match = 0
+            total = 0
+        result = [ctrl_match, ctrl_total, float(ctrl_match)/ctrl_total]
+        result.extend([exp_match, exp_total, float(exp_match)/exp_total])
+        result.extend(ctrl_all_stats)
+        result.extend(exp_all_stats)
+        return result
+                      
         
         
 

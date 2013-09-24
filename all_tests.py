@@ -170,6 +170,20 @@ class TestLocus(unittest.TestCase):
     def test_call_consensus(self):
         call = self.locus.call_consensus(frequency = 0.9)
         self.assertEqual('A', call)
+        self.setUp3()
+        call2 = self.locus3.call_consensus(frequency = 0.42)
+        self.assertEqual('A', call2)
+        call3 = self.locus3.call_consensus(frequency = 0.43)
+        self.assertFalse(call3)
+
+    def test_generate_stats(self):
+        expected = []
+        expected.extend([48, 48, 1.0, 69, 70, 0.98571428571428577])
+        expected.extend([34, 34, 14, 14, 40, 40, 29, 30])
+        self.assertEqual(expected, self.locus.generate_stats('A'))
+        
+
+        
 
         
 
