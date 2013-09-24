@@ -53,12 +53,12 @@ class QualityFilter:
             int_score = self.phred_helper.char_to_int(score)
             if int_score >= self.quality_threshold:
                 keep_indices.append(index)
-            else:
-                message = "discarding base " + pile.bases[index]
-                message += " (index " + str(index) + ")"
-                message += " from pile " + pile.bases + "; qual score = "
-                message += str(int_score)
-                sys.stderr.write(message)
+            #else:
+                #message = "discarding base " + pile.bases[index]
+                #message += " (index " + str(index) + ")"
+                #message += " from pile " + pile.bases + "; qual score = "
+                #message += str(int_score)+"\n"
+                #sys.stderr.write(message)
         # build new bases and scores strings
         for n in keep_indices:
             keep_bases += pile.bases[n]

@@ -32,11 +32,13 @@ def write_header():
     header = ["chromosome_locus", "control match", "control total", "|"]
     header.extend(["exp. match", "exp. total", "|"])
     header.extend(["each control sample match, total", "|", "each exp. sample match, total"])
+    return header
 
 with open(tsv_file, 'rb') as file:
     reader = csv.reader(file, delimiter='\t', quotechar='|')
+    header = write_header()
+    writer.writerow(header)
     for line in reader:
-        print(str(line))
         if not parser.validate(line, min_depth):
             write_error(line, "Nominal depth below threshold")
         else:
@@ -47,7 +49,6 @@ with open(tsv_file, 'rb') as file:
                 write_error(line, "Depth below threshold after quality filtering")
             else:        
                 call = locus.call_consensus(min_base_freq)
-                print("call for "+line[0]+"_"+line[1]+" is "+call)
                 if not call:
                     write_error(line, "Unable to call consensus")
                 else:
