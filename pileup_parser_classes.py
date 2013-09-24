@@ -128,6 +128,13 @@ class PileupLineParser:
             lengths.append(int(line[length_index]))
         return lengths
 
+    def validate(self, line, min_length):
+        lengths = self.get_lengths(line)
+        for length in lengths:
+            if length < min_length:
+                return False
+        return True
+
     def get_chromosome(self, line):
         return line[0]
 

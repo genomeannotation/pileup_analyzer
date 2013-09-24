@@ -90,6 +90,10 @@ class TestPileupLineParser(unittest.TestCase):
         lengths = self.parser.get_lengths(self.test_input)
         expected = [34, 14, 40, 30]
         self.assertEqual(expected, lengths)
+
+    def test_validate(self):
+        self.assertTrue(self.parser.validate(self.test_input, 10))
+        self.assertFalse(self.parser.validate(self.test_input, 15))
         
     def test_get_chromosome(self):
         self.assertEqual('comp102583_c0_seq1', self.parser.get_chromosome(self.test_input))
