@@ -120,6 +120,14 @@ class PileupLineParser:
             all_bases.append(bases)
         return all_bases
 
+    def get_lengths(self, line):
+        lengths = []
+        number_of_samples = (len(line) - 3) / 3
+        for i in range(number_of_samples):
+            length_index = 3 * (i+1)
+            lengths.append(int(line[length_index]))
+        return lengths
+
     def get_chromosome(self, line):
         return line[0]
 

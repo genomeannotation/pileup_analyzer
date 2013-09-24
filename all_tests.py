@@ -85,6 +85,11 @@ class TestPileupLineParser(unittest.TestCase):
         all_bases = self.parser.get_all_bases(self.test_input)
         self.assertEqual(4, len(all_bases))
         self.assertEqual('AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa', all_bases[2])
+
+    def test_get_lengths(self):
+        lengths = self.parser.get_lengths(self.test_input)
+        expected = [34, 14, 40, 30]
+        self.assertEqual(expected, lengths)
         
     def test_get_chromosome(self):
         self.assertEqual('comp102583_c0_seq1', self.parser.get_chromosome(self.test_input))
@@ -95,6 +100,7 @@ class TestPileupLineParser(unittest.TestCase):
     def test_generate_locus(self):
         locus = self.parser.generate_locus(self.test_input)
         self.assertEqual('Locus', locus.__class__.__name__)   #assertIsInstance only in py2.7!
+        self.assertEqual('DDDDDBBDDDDDDD', locus.control_piles[1].scores)
         
 class TestLocus(unittest.TestCase):
     def setUp(self):
