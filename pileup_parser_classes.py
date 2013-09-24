@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import re
+import sys
 from phred import PhredHelper
 
 class Pile:
@@ -49,8 +50,15 @@ class QualityFilter:
         keep_scores = ''
         # build list of indices of bases/scores to keep
         for index, score in enumerate(pile.scores):
-            if self.phred_helper.char_to_int(score) >= self.quality_threshold:
+            int_score = self.phred_helper.char_to_int(score)
+            if int_score >= self.quality_threshold:
                 keep_indices.append(index)
+            else:
+                message = "discarding base " + pile.bases[index]
+                message += " (index " + str(index) + ")"
+                message += " from pile " + pile.bases + "; qual score = "
+                message += str(int_score)
+                sys.stderr.write(message)
         # build new bases and scores strings
         for n in keep_indices:
             keep_bases += pile.bases[n]
@@ -190,8 +198,8 @@ class Locus:
             ctrl_bases.append(pile.bases)
         return caller.call(ctrl_bases)
 
-    def generate_stats(self, call):
-        ref = call.lower()
+    def generate_stats(self, called):
+        ref = str(called).lower()
         ctrl_all_stats = []
         exp_all_stats = []
         ctrl_match = 0
