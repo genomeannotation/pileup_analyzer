@@ -162,6 +162,12 @@ class Locus:
         result += "experimental piles: " + str(len(self.experimental_piles))
         return result
 
+    def sanitize_all(self):
+        sani = PileSanitizer()        
+        for pile in self.control_piles:
+            pile.bases = sani.sanitize(pile.bases)
+        for pile in self.experimental_piles:
+            pile.bases = sani.sanitize(pile.bases)
 
 
 

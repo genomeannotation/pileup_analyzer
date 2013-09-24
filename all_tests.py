@@ -118,6 +118,17 @@ class TestLocus(unittest.TestCase):
         exp_piles = [pile3, pile4]
         self.locus = Locus(chrom, coord, control_piles, exp_piles)
 
+    def setUp2(self):
+        chrom = 'test_chrom'
+        coord = '123'
+        pile1 = Pile('GAT+3CCGTACA', 'B::D0DD')
+        pile2 = Pile('GATTA^&CA', 'B::D0DD')
+        control_piles = [pile1, pile2]
+        pile3 = Pile('GATTAC-2GGA', 'B::D0DD')
+        pile4 = Pile('G$#ATTA$@CA', 'B::D0DD')
+        exp_piles = [pile3, pile4]
+        self.locus2 = Locus(chrom, coord, control_piles, exp_piles)
+
     def test_init(self):
         self.assertEqual('comp102583_c0_seq1', self.locus.chromosome)
 
@@ -125,6 +136,14 @@ class TestLocus(unittest.TestCase):
         expected = "chromosome: comp102583_c0_seq1; coordinate: 667; "
         expected += "control piles: 2; experimental piles: 2"
         self.assertEqual(expected, self.locus.to_string())
+
+    def test_sanitize_all(self):
+        self.setUp2()
+        self.locus2.sanitize_all()
+        self.assertEqual('GATTACA', self.locus2.control_piles[0].bases)
+        self.assertEqual('GATTACA', self.locus2.control_piles[1].bases)
+        self.assertEqual('GATTACA', self.locus2.experimental_piles[0].bases)
+        self.assertEqual('GATTACA', self.locus2.experimental_piles[1].bases)
 
         
 
