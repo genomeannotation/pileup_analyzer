@@ -177,9 +177,9 @@ class TestLocus(unittest.TestCase):
         self.assertFalse(call3)
 
     def test_generate_stats(self):
-        expected = []
-        expected.extend([48, 48, 1.0, 69, 70, 0.98571428571428577])
-        expected.extend([34, 34, 14, 14, 40, 40, 29, 30])
+        expected = ['comp102583_c0_seq1_locus667']
+        expected.extend([48, 48, 1.0, '|', 69, 70, 0.98571428571428577, '|'])
+        expected.extend([34, 34, 14, 14, '|', 40, 40, 29, 30])
         self.assertEqual(expected, self.locus.generate_stats('A'))
         
 

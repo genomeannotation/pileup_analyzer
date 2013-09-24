@@ -220,9 +220,11 @@ class Locus:
             exp_all_stats.extend([match, total])
             match = 0
             total = 0
-        result = [ctrl_match, ctrl_total, float(ctrl_match)/ctrl_total]
-        result.extend([exp_match, exp_total, float(exp_match)/exp_total])
+        result = [self.chromosome+"_locus"+self.coordinate]
+        result.extend([ctrl_match, ctrl_total, float(ctrl_match)/ctrl_total, '|'])
+        result.extend([exp_match, exp_total, float(exp_match)/exp_total, '|'])
         result.extend(ctrl_all_stats)
+        result.append('|')
         result.extend(exp_all_stats)
         return result
                       
