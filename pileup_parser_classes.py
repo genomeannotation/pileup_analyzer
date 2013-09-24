@@ -13,7 +13,8 @@ class Pile:
 class PileSanitizer:
     def __init__(self):
         self.indel_re = re.compile('[\+\-]')
-        self.cigar_re = re.compile('[\^\$]')
+        self.cigar1_re = re.compile('\^')
+        self.cigar2_re = re.compile('\$')
 
     def sanitize(self, bases):
         clean_bases = ''
@@ -24,9 +25,12 @@ class PileSanitizer:
             if m1:
                 on_indel = True
                 continue
-            m2 = self.cigar_re.match(base)
+            m2 = self.cigar1_re.match(base)
             if m2:
                 skip = 1
+                continue
+            m3 = self.cigar2_re.match(base)
+            if m3:
                 continue
             if on_indel:
                 skip = int(base)

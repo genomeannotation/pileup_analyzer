@@ -23,12 +23,12 @@ class TestPileSanitizer(unittest.TestCase):
         bases2 = 'AA-2CCAAGG'
         result2 = sanitizer.sanitize(bases2)
         self.assertEqual('AAAAGG', result2)
-        # remove those '^' CIGAR thingies
+        # remove those '^' CIGAR thingies and the base after
         bases3 = 'AA^#AAGG'
         result3 = sanitizer.sanitize(bases3)
         self.assertEqual('AAAAGG', result3)
         # remove those '$' CIGAR thingies
-        bases4 = 'A$(AAAGG'
+        bases4 = 'A$AAAGG'
         result4 = sanitizer.sanitize(bases4)
         self.assertEqual('AAAAGG', result4)
 
@@ -125,7 +125,7 @@ class TestLocus(unittest.TestCase):
         pile2 = Pile('GATTA^&CA', 'hghhghg')
         control_piles = [pile1, pile2]
         pile3 = Pile('GATTAC-2GGA', 'hghhghg')
-        pile4 = Pile('G$#ATTA$@CA', 'hghhghg')
+        pile4 = Pile('G$ATTA$CA', 'hghhghg')
         exp_piles = [pile3, pile4]
         self.locus2 = Locus(chrom, coord, control_piles, exp_piles)
 

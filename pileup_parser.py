@@ -24,7 +24,7 @@ outfile = open(output_file, 'w')
 writer = csv.writer(outfile, delimiter='\t', quoting=csv.QUOTE_NONE)
 
 def write_error(line, error):   
-    msg = "Discarded " + line[0] + ", locus " + line[1] + "; Reason: " + error
+    msg = "Discarded " + line[0] + ", locus " + line[1] + "; Reason: " + error + "\n"
     sys.stderr.write(msg)
 
 def write_header():
