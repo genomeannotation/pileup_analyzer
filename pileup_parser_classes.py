@@ -175,6 +175,15 @@ class Locus:
             filt.filter(pile)
         for pile in self.experimental_piles:
             filt.filter(pile)
+
+    def validate_depth(self, depth):
+        for pile in self.control_piles:
+            if len(pile.scores) < depth:
+                return False
+        for pile in self.experimental_piles:
+            if len(pile.scores) < depth:
+                return False
+        return True
         
         
 

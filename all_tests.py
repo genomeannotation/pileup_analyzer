@@ -133,9 +133,9 @@ class TestLocus(unittest.TestCase):
         chrom = 'test_chrom'
         coord = '123'
         pile1 = Pile('GATTACA', 'hghhghg')
-        pile2 = Pile('GATTACA', 'hghhghg')
+        pile2 = Pile('GATTACA', 'ggggggg')
         control_piles = [pile1, pile2]
-        pile3 = Pile('GATTACA', 'hghhghg')
+        pile3 = Pile('GATTACA', 'hijklmn')
         pile4 = Pile('GATTACA', 'hghhghg')
         exp_piles = [pile3, pile4]
         self.locus3 = Locus(chrom, coord, control_piles, exp_piles)
@@ -160,6 +160,13 @@ class TestLocus(unittest.TestCase):
         self.setUp3()
         self.locus3.filter_all(40, 64)
         self.assertEqual('GTTC', self.locus3.control_piles[0].bases)
+        self.assertEqual('', self.locus3.control_piles[1].bases)
+        self.assertEqual('GATTACA', self.locus3.experimental_piles[0].bases)
+
+    def test_validate_depth(self):
+        self.assertTrue(self.locus.validate_depth(14))
+        self.assertFalse(self.locus.validate_depth(15))
+        
 
         
 
