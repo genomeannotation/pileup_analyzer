@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 
 import unittest
-from pileup_parser_classes import ConsensusCaller, PileSanitizer, QualityFilter
+from pileup_parser_classes import Pile, ConsensusCaller, PileSanitizer, QualityFilter
+
+class TestPile(unittest.TestCase):
+    def test_initialize(self):
+        bases1 = 'GATTACA'
+        scores1 = 'hhakasf'
+        test_pile = Pile(bases1, scores1)
+        self.assertEqual(bases1, test_pile.bases)
+        self.assertEqual(scores1, test_pile.scores)
 
 class TestPileSanitizer(unittest.TestCase):
     def test_sanitize(self):
@@ -25,8 +33,19 @@ class TestPileSanitizer(unittest.TestCase):
 
 class TestQualityFilter(unittest.TestCase):
     def test_initialize(self):
-        fil = QualityFilter(30)
+        fil = QualityFilter(30, 64)
         self.assertEqual(30, fil.quality_threshold)
+        self.assertEqual(64, fil.phred_helper.offset)
+
+    def test_filter(self):
+        bases1 = 'GATTACA'
+        scores1 = 'hUqpVu^'
+        pile1 = Pile(bases1, scores1)
+        fil = QualityFilter(40, 64)
+        fil.filter(pile1)
+        self.assertEqual('GTTC', pile1.bases)
+        self.assertEqual('hqpu', pile1.scores)
+        
 
 class TestConsensusCaller(unittest.TestCase):
     def test_initialize(self):

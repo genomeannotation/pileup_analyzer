@@ -1,17 +1,24 @@
 #!/usr/bin/env python
 
 import re
+from phred import PhredHelper
 
+class Pile:
+    def __init__(self, bases, scores):
+        self.bases = bases
+        self.scores = scores
+
+# Operates on a Pile.bases string
 class PileSanitizer:
     def __init__(self):
         self.indel_re = re.compile('[\+\-]')
         self.cigar_re = re.compile('[\^\$]')
 
-    def sanitize(self, pile):
-        clean_pile = ''
+    def sanitize(self, bases):
+        clean_bases = ''
         skip = 0
         on_indel = False
-        for base in pile:
+        for base in bases:
             m1 = self.indel_re.match(base)
             if m1:
                 on_indel = True
@@ -27,24 +34,42 @@ class PileSanitizer:
             if skip > 0:
                 skip -= 1
                 continue
-            clean_pile += base
-        return clean_pile
+            clean_bases += base
+        return clean_bases
 
+# Operates on a Pile object
 class QualityFilter:
-    def __init__(self, min_qual):
+    def __init__(self, min_qual, offset=33):
         self.quality_threshold = min_qual
+        self.phred_helper = PhredHelper(offset)
 
+    def filter(self, pile):
+        keep_indices = []
+        keep_bases = ''
+        keep_scores = ''
+        # build list of indices of bases/scores to keep
+        for index, score in enumerate(pile.scores):
+            if self.phred_helper.char_to_int(score) >= self.quality_threshold:
+                keep_indices.append(index)
+        # build new bases and scores strings
+        for n in keep_indices:
+            keep_bases += pile.bases[n]
+            keep_scores += pile.scores[n]
+        # update pile fields
+        pile.bases = keep_bases
+        pile.scores = keep_scores
+
+# Operates on a list of strings (each string is a Pile.bases)
 class ConsensusCaller:
-
     def __init__(self, depth, frequency):
         self.min_depth_of_coverage = depth
         self.min_base_frequency = frequency
 
-    # calls consensus on list of piles
-    def call(self, piles):
+    # calls consensus on list of pile.bases strings
+    def call(self, list_of_bases):
         total_length = 0
         counts = {'A': 0, 'C': 0, 'T': 0, 'G': 0}
-        for pile in piles:
+        for pile in list_of_bases:
             if len(pile) < self.min_depth_of_coverage:
                 return None
             total_length += len(pile)
