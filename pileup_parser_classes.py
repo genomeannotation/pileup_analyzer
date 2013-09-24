@@ -96,23 +96,21 @@ class PileupLineParser:
         self.control_group = grouplist[0]
         self.experimental_group = grouplist[1]
 
-    def get_control_piles(self, line):
-        control_piles = []
-        for i in self.control_group:
+    def get_piles_from_group(self, group, line):
+        piles = []
+        for i in group:
             starting_index = 3 * (i+1)
             bases = line[starting_index + 1]
             scores = line[starting_index + 2]
-            control_piles.append(Pile(bases, scores))
-        return control_piles
+            piles.append(Pile(bases, scores))
+        return piles
+            
+
+    def get_control_piles(self, line):
+        return self.get_piles_from_group(self.control_group, line)
 
     def get_experimental_piles(self, line):
-        exp_piles = []
-        for i in self.experimental_group:
-            starting_index = 3 * (i+1)
-            bases = line[starting_index + 1]
-            scores = line[starting_index + 2]
-            exp_piles.append(Pile(bases, scores))
-        return exp_piles
+        return self.get_piles_from_group(self.experimental_group, line)
 
     def get_all_bases(self, line):
         all_bases = []
