@@ -104,7 +104,6 @@ class PileupLineParser:
             scores = line[starting_index + 2]
             piles.append(Pile(bases, scores))
         return piles
-            
 
     def get_control_piles(self, line):
         return self.get_piles_from_group(self.control_group, line)
@@ -121,6 +120,11 @@ class PileupLineParser:
             all_bases.append(bases)
         return all_bases
 
+    def get_chromosome(self, line):
+        return line[0]
+
+    def get_coordinate(self, line):
+        return line[1]
 
 
 

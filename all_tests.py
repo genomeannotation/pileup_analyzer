@@ -86,6 +86,11 @@ class TestPileupLineParser(unittest.TestCase):
         self.assertEqual(4, len(all_bases))
         self.assertEqual('AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa', all_bases[2])
         
+    def test_get_chromosome(self):
+        self.assertEqual('comp102583_c0_seq1', self.parser.get_chromosome(self.test_input))
+
+    def test_get_coordinate(self):
+        self.assertEqual('667', self.parser.get_coordinate(self.test_input))
         
         
 
