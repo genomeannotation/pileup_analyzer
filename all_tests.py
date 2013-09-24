@@ -62,36 +62,29 @@ class TestConsensusCaller(unittest.TestCase):
         self.assertEqual('A', result)
 
 class TestPileupLineParser(unittest.TestCase):
-    def test_initialize(self):
+    def setUp(self):
         groups = [[0, 1], [2, 3]]
-        parser = PileupLineParser(groups)
-        self.assertEqual([0, 1], parser.control_group)
+        self.parser = PileupLineParser(groups)
+        input_string = """comp102583_c0_seq1      667     N       34      AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa      B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD      14      AAAAAAAaaaaaaa  DDDDDBBDDDDDDD  40      AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa        DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9        30      AAAAAAAAAAAAAAAaaaaaaacaaaaaaa  DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD"""
+        self.test_input = input_string.split()
+        
+    def test_initialize(self):
+        self.assertEqual([0, 1], self.parser.control_group)
 
     def test_get_control_piles(self):
-        groups = [[0, 1], [2, 3]]
-        parser = PileupLineParser(groups)
-        input_string = """comp102583_c0_seq1      667     N       34      AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa      B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD      14      AAAAAAAaaaaaaa  DDDDDBBDDDDDDD  40      AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa        DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9        30      AAAAAAAAAAAAAAAaaaaaaacaaaaaaa  DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD"""
-        test_input = input_string.split()
-        control_piles = parser.get_control_piles(test_input)
+        control_piles = self.parser.get_control_piles(self.test_input)
         self.assertEqual(2, len(control_piles))
         self.assertEqual('AAAAAAAaaaaaaa', control_piles[1].bases)
 
     def test_get_experimental_piles(self):
-        groups = [[0, 1], [2, 3]]
-        parser = PileupLineParser(groups)
-        input_string = """comp102583_c0_seq1      667     N       34      AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa      B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD      14      AAAAAAAaaaaaaa  DDDDDBBDDDDDDD  40      AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa        DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9        30      AAAAAAAAAAAAAAAaaaaaaacaaaaaaa  DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD"""
-        test_input = input_string.split()
-        exp_piles = parser.get_experimental_piles(test_input)
+        exp_piles = self.parser.get_experimental_piles(self.test_input)
         self.assertEqual(2, len(exp_piles))
         self.assertEqual('DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD', exp_piles[1].scores)
 
     def test_get_all_bases(self):
-        groups = [[0, 1], [2, 3]]
-        parser = PileupLineParser(groups)
-        input_string = """comp102583_c0_seq1      667     N       34      AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa      B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD      14      AAAAAAAaaaaaaa  DDDDDBBDDDDDDD  40      AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa        DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9        30      AAAAAAAAAAAAAAAaaaaaaacaaaaaaa  DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD"""
-        test_input = input_string.split()
-        all_bases = parser.get_all_bases(test_input)
+        all_bases = self.parser.get_all_bases(self.test_input)
         self.assertEqual(4, len(all_bases))
+        self.assertEqual('AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa', all_bases[2])
         
         
         
