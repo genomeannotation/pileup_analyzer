@@ -91,6 +91,10 @@ class TestPileupLineParser(unittest.TestCase):
 
     def test_get_coordinate(self):
         self.assertEqual('667', self.parser.get_coordinate(self.test_input))
+
+    def test_generate_locus(self):
+        locus = self.parser.generate_locus(self.test_input)
+        self.assertEqual('Locus', locus.__class__.__name__)   #assertIsInstance only in py2.7!
         
 class TestLocus(unittest.TestCase):
     def setUp(self):
