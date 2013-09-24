@@ -196,7 +196,8 @@ class Locus:
         ctrl_bases = []
         for pile in self.control_piles:
             ctrl_bases.append(pile.bases)
-        return caller.call(ctrl_bases)
+        base = caller.call(ctrl_bases)
+        return base
 
     def generate_stats(self, called):
         ref = str(called).lower()

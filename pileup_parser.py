@@ -13,7 +13,9 @@ output_file = sys.argv[1]+".results"
 groups = [[0,1,2,3,4,5], [6,7,8,9,10,11]]
 min_depth = 1
 min_qual = 1
+min_base_freq = 0.5
 offset = 33     # set to 33 for sanger, 64 for illumina 
+
 
 ## TODO take this info as cmdline arg?
 parser = PileupLineParser(groups)
@@ -44,7 +46,8 @@ with open(tsv_file, 'rb') as file:
             if not locus.validate_depth(min_depth):
                 write_error(line, "Depth below threshold after quality filtering")
             else:        
-                call = locus.call_consensus
+                call = locus.call_consensus(min_base_freq)
+                print("call for "+line[0]+"_"+line[1]+" is "+call)
                 if not call:
                     write_error(line, "Unable to call consensus")
                 else:
