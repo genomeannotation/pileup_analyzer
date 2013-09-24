@@ -114,7 +114,14 @@ class PileupLineParser:
             exp_piles.append(Pile(bases, scores))
         return exp_piles
 
-
+    def get_all_bases(self, line):
+        all_bases = []
+        number_of_samples = (len(line) - 3) / 3
+        for i in range(number_of_samples):
+            starting_index = 3 * (i+1)
+            bases = line[starting_index + 1]
+            all_bases.append(bases)
+        return all_bases
 
 
 

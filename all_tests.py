@@ -84,6 +84,15 @@ class TestPileupLineParser(unittest.TestCase):
         exp_piles = parser.get_experimental_piles(test_input)
         self.assertEqual(2, len(exp_piles))
         self.assertEqual('DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD', exp_piles[1].scores)
+
+    def test_get_all_bases(self):
+        groups = [[0, 1], [2, 3]]
+        parser = PileupLineParser(groups)
+        input_string = """comp102583_c0_seq1      667     N       34      AAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaa      B::D0DDBBDBDDDDDD3DDD5DDD>@DBDDDDD      14      AAAAAAAaaaaaaa  DDDDDBBDDDDDDD  40      AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa        DD65DDBDDDDDDDDD86BB#DDDDDDDBDDDDD@DD;D9        30      AAAAAAAAAAAAAAAaaaaaaacaaaaaaa  DD6DD@DDBDD8DBDDDD5DDD#DDDBDDD"""
+        test_input = input_string.split()
+        all_bases = parser.get_all_bases(test_input)
+        self.assertEqual(4, len(all_bases))
+        
         
         
 
