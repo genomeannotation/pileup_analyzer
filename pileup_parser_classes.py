@@ -61,8 +61,7 @@ class QualityFilter:
 
 # Operates on a list of strings (each string is a Pile.bases)
 class ConsensusCaller:
-    def __init__(self, depth, frequency):
-        self.min_depth_of_coverage = depth
+    def __init__(self, frequency):
         self.min_base_frequency = frequency
 
     # calls consensus on list of pile.bases strings
@@ -70,8 +69,6 @@ class ConsensusCaller:
         total_length = 0
         counts = {'A': 0, 'C': 0, 'T': 0, 'G': 0}
         for pile in list_of_bases:
-            if len(pile) < self.min_depth_of_coverage:
-                return None
             total_length += len(pile)
             for base in pile:
                 if base == 'A' or base == 'a':
@@ -184,6 +181,15 @@ class Locus:
             if len(pile.scores) < depth:
                 return False
         return True
+
+    def call_consensus(self, frequency):
+        # only looks at control piles
+        caller = ConsensusCaller(frequency)
+        ctrl_bases = []
+        for pile in self.control_piles:
+            ctrl_bases.append(pile.bases)
+        return caller.call(ctrl_bases)
+            
         
         
 

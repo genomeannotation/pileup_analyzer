@@ -50,11 +50,11 @@ class TestQualityFilter(unittest.TestCase):
 
 class TestConsensusCaller(unittest.TestCase):
     def test_initialize(self):
-        caller = ConsensusCaller(depth= 10, frequency = .99)
-        self.assertEqual(10, caller.min_depth_of_coverage)
+        caller = ConsensusCaller(frequency = .99)
+        self.assertEqual(.99, caller.min_base_frequency)
 
     def test_call(self):
-        caller = ConsensusCaller(depth = 5, frequency = .9)
+        caller = ConsensusCaller(frequency = .9)
         test_bases1 = 'AAAAAAAAAAAAAAACA'
         test_bases2 = 'AAAAAAAAAAAAAAAAAAA'
         bases = [test_bases1, test_bases2]
@@ -166,6 +166,11 @@ class TestLocus(unittest.TestCase):
     def test_validate_depth(self):
         self.assertTrue(self.locus.validate_depth(14))
         self.assertFalse(self.locus.validate_depth(15))
+
+    def test_call_consensus(self):
+        call = self.locus.call_consensus(frequency = 0.9)
+        self.assertEqual('A', call)
+
         
 
         
