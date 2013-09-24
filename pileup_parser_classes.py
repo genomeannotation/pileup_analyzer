@@ -87,3 +87,37 @@ class ConsensusCaller:
             return ref_base
         else:
             return None
+
+# Takes a list of two lists (0-indexed sample numbers for control and experimental groups)
+class PileupLineParser:
+    def __init__(self, grouplist):
+        if len(grouplist) != 2:
+            sys.err.write("PileupLineParser: grouplist must be a list of 2 lists.")
+        self.control_group = grouplist[0]
+        self.experimental_group = grouplist[1]
+
+    def get_control_piles(self, line):
+        control_piles = []
+        for i in self.control_group:
+            starting_index = 3 * (i+1)
+            bases = line[starting_index + 1]
+            scores = line[starting_index + 2]
+            control_piles.append(Pile(bases, scores))
+        return control_piles
+
+    def get_experimental_piles(self, line):
+        exp_piles = []
+        for i in self.experimental_group:
+            starting_index = 3 * (i+1)
+            bases = line[starting_index + 1]
+            scores = line[starting_index + 2]
+            exp_piles.append(Pile(bases, scores))
+        return exp_piles
+
+
+
+
+
+
+
+
