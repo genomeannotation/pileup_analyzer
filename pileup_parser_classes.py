@@ -20,7 +20,15 @@ class PileSanitizer:
         clean_bases = ''
         skip = 0
         on_indel = False
+        insert_qual_score = False
         for base in bases:
+            if on_indel:
+                skip = int(base)
+                on_indel = False
+                continue
+            if skip > 0:
+                skip -= 1
+                continue
             m1 = self.indel_re.match(base)
             if m1:
                 on_indel = True
@@ -31,13 +39,6 @@ class PileSanitizer:
                 continue
             m3 = self.cigar2_re.match(base)
             if m3:
-                continue
-            if on_indel:
-                skip = int(base)
-                on_indel = False
-                continue
-            if skip > 0:
-                skip -= 1
                 continue
             clean_bases += base
         return clean_bases
@@ -64,6 +65,9 @@ class QualityFilter:
                 #message += str(int_score)+"\n"
                 #sys.stderr.write(message)
         # build new bases and scores strings
+        #print("bases: "+pile.bases)
+        #print("scores: "+pile.scores)
+        #print("keepindices: "+str(keep_indices))
         for n in keep_indices:
             keep_bases += pile.bases[n]
             keep_scores += pile.scores[n]

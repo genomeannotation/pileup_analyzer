@@ -31,6 +31,16 @@ class TestPileSanitizer(unittest.TestCase):
         bases4 = 'A$AAAGG'
         result4 = sanitizer.sanitize(bases4)
         self.assertEqual('AAAAGG', result4)
+        # one more just for fun
+        bases5 = 'G-2GGA$T^@TA+4GAGACA'
+        result5 = sanitizer.sanitize(bases5)
+        self.assertEqual('GATTACA', result5)
+        # okay here's a super-tricky one,
+        # what if the qual symbol after the '^'
+        # is a '$'?
+        bases6 = 'GA^$TTACA'
+        result6 = sanitizer.sanitize(bases6)
+        self.assertEqual('GATTACA', result6)
 
 class TestQualityFilter(unittest.TestCase):
     def test_initialize(self):

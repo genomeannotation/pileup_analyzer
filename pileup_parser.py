@@ -10,10 +10,12 @@ if len(sys.argv) != 2:
 
 tsv_file = sys.argv[1]
 output_file = sys.argv[1]+".results"
+
+## USER-DEFINED VARIABLES!!!
 groups = [[0,1,2,3,4,5], [6,7,8,9,10,11]]
-min_depth = 1
-min_qual = 1
-min_base_freq = 0.5
+min_depth = 2
+min_qual = 20
+min_base_freq = 0.7
 offset = 33     # set to 33 for sanger, 64 for illumina 
 
 
