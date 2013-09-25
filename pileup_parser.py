@@ -13,9 +13,9 @@ output_file = sys.argv[1]+".results"
 
 ## USER-DEFINED VARIABLES!!!
 groups = [[0,1,2,3,4,5], [6,7,8,9,10,11]]
-min_depth = 2
-min_qual = 20
-min_base_freq = 0.7
+min_depth = 50
+min_qual = 30
+min_base_freq = 0.8
 offset = 33     # set to 33 for sanger, 64 for illumina 
 
 
@@ -46,7 +46,12 @@ with open(tsv_file, 'rb') as file:
         else:
             locus = parser.generate_locus(line)
             locus.sanitize_all()
-            locus.filter_all(min_qual, offset)
+            try:
+                locus.filter_all(min_qual, offset)
+            except IndexError:
+                sys.stderr.write("index error trying to filter "+str(line))
+                sys.stderr.write("proceeding to next line of input")
+                continue
             if not locus.validate_depth(min_depth):
                 write_error(line, "Depth below threshold after quality filtering")
             else:        
